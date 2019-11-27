@@ -15,16 +15,21 @@ SET (SOURCES
         ${SRC_DIR}/Logger.cpp
         ${SRC_DIR}/LogFileDumper.cpp
         ${SRC_DIR}/LoggerWidget.cpp
+        ${SRC_DIR}/LoggerController.cpp
+        ${SRC_DIR}/MainWindow.cpp
     )
 
 SET (HEADERS
         ${INCLUDE_DIR}/Logger.h
         ${INCLUDE_DIR}/LogFileDumper.h
         ${INCLUDE_DIR}/LoggerWidget.h
+        ${INCLUDE_DIR}/LoggerController.h
+        ${INCLUDE_DIR}/MainWindow.h
     )
 
 SET (UIS
         ${UI_DIR}/LoggerWidget.ui
+        ${UI_DIR}/MainWindow.ui
     )
 
 FIND_PACKAGE (Qt5 COMPONENTS Widgets Concurrent Network)

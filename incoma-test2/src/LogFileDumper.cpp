@@ -1,5 +1,3 @@
-#include <QDebug>
-#include <QMessageBox>
 #include "LogFileDumper.h"
 
 LogFileDumper::LogFileDumper(QString filename, QWidget *widget)
