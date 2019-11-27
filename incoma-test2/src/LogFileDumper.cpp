@@ -1,3 +1,4 @@
+#include <QTextStream>
 #include "LogFileDumper.h"
 
 LogFileDumper::LogFileDumper(QString filename, QWidget *widget)
