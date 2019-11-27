@@ -8,16 +8,23 @@ SET (CMAKE_CXX_STANDARD 11)
 
 SET (SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 SET (INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+SET (UI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 SET (SOURCES
         ${SRC_DIR}/main.cpp
         ${SRC_DIR}/Logger.cpp
         ${SRC_DIR}/LogFileDumper.cpp
+        ${SRC_DIR}/LoggerWidget.cpp
     )
 
 SET (HEADERS
         ${INCLUDE_DIR}/Logger.h
         ${INCLUDE_DIR}/LogFileDumper.h
+        ${INCLUDE_DIR}/LoggerWidget.h
+    )
+
+SET (UIS
+        ${UI_DIR}/LoggerWidget.ui
     )
 
 FIND_PACKAGE (Qt5 COMPONENTS Widgets Concurrent Network)
@@ -26,20 +33,18 @@ IF (APPLE)
     SET (CMAKE_OSX_ARCHITECTURES "x86_64")
 ENDIF (APPLE)
 
-ADD_EXECUTABLE (${PROJECT} ${SOURCES} ${HEADERS})
+IF (APPLE)
+    ADD_EXECUTABLE (${PROJECT} MACOSX_BUNDLE ${SOURCES} ${HEADERS} ${UIS})
+ELSE ()
+    ADD_EXECUTABLE (${PROJECT} ${SOURCES} ${HEADERS} ${UIS})
+ENDIF (APPLE)
+
 TARGET_INCLUDE_DIRECTORIES (${PROJECT} PUBLIC ${INCLUDE_DIR})
-TARGET_LINK_LIBRARIES (${PROJECT} Qt5::Widgets Qt5::Concurrent Qt5::Network)
+TARGET_LINK_LIBRARIES (${PROJECT} Qt5::Widgets Qt5::Concurrent Qt5::Network Qt5::Core)
 
 IF (APPLE)
-ADD_CUSTOM_COMMAND (TARGET ${PROJECT}
-        POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/${PROJECT}.app/Contents/MacOS
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/${PROJECT}.app/Contents/MacOS
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/${PROJECT} ${CMAKE_BINARY_DIR}/${PROJECT}.app/Contents/MacOS/
-    )
-
 ADD_CUSTOM_TARGET (run
-        COMMAND open ${CMAKE_BINARY_DIR}/${PROJECT}.app
+        COMMAND open ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT}.app
     )
 ADD_DEPENDENCIES (run ${PROJECT})
 ENDIF (APPLE)

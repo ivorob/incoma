@@ -7,26 +7,21 @@
 
 #include "Logger.h"
 #include "LogFileDumper.h"
+#include "LoggerWidget.h"
 
 int
 main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    QWidget widget;
-    widget.setWindowTitle("Hello, World!");
 
-    QVBoxLayout *layout = new QVBoxLayout;
-    QListView *listView = new QListView;
-    layout->addWidget(listView);
-    widget.setLayout(layout);
-    widget.show();
+    LoggerWidget loggerWidget("Server log");
 
     Logger testLogger;
     LogFileDumper logFileDumper("1.log");
     testLogger.addView(&logFileDumper);
 
     testLogger.log("Test string 1");
-    testLogger.addView(listView);
+    testLogger.addView(loggerWidget.getView());
     testLogger.log("Test string 2");
 
     try {
@@ -38,5 +33,6 @@ main(int argc, char *argv[])
 
     testLogger.log("Test string 3");
 
+    loggerWidget.show();
     return app.exec();
 }
