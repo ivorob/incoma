@@ -17,6 +17,7 @@ SET (SOURCES
         ${SRC_DIR}/LoggerWidget.cpp
         ${SRC_DIR}/LoggerController.cpp
         ${SRC_DIR}/MainWindow.cpp
+        ${SRC_DIR}/LoggerProvider.cpp
     )
 
 SET (HEADERS
@@ -25,6 +26,7 @@ SET (HEADERS
         ${INCLUDE_DIR}/LoggerWidget.h
         ${INCLUDE_DIR}/LoggerController.h
         ${INCLUDE_DIR}/MainWindow.h
+        ${INCLUDE_DIR}/LoggerProvider.h
     )
 
 SET (UIS
