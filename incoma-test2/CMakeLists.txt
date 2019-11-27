@@ -11,6 +11,13 @@ SET (INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 SET (SOURCES
         ${SRC_DIR}/main.cpp
+        ${SRC_DIR}/Logger.cpp
+        ${SRC_DIR}/LogFileDumper.cpp
+    )
+
+SET (HEADERS
+        ${INCLUDE_DIR}/Logger.h
+        ${INCLUDE_DIR}/LogFileDumper.h
     )
 
 FIND_PACKAGE (Qt5 COMPONENTS Widgets Concurrent Network)
@@ -20,6 +27,7 @@ IF (APPLE)
 ENDIF (APPLE)
 
 ADD_EXECUTABLE (${PROJECT} ${SOURCES} ${HEADERS})
+TARGET_INCLUDE_DIRECTORIES (${PROJECT} PUBLIC ${INCLUDE_DIR})
 TARGET_LINK_LIBRARIES (${PROJECT} Qt5::Widgets Qt5::Concurrent Qt5::Network)
 
 IF (APPLE)
