@@ -6,14 +6,16 @@
 
 #include "Logger.h"
 
-typedef QSharedPointer<Logger> LoggerHolder;
-
-class LoggerProvider {
+class LoggerProvider : public QObject {
+    Q_OBJECT
+private:
     LoggerProvider() = default;
 public:
     static LoggerProvider& instance();
 public:
     LoggerHolder get(const QString& name);
+signals:
+    void newLogger(QString name, LoggerHolder holder);
 private:
     LoggerHolder addLogger(const QString& name);
 private:

@@ -14,3 +14,5 @@ public:
 private:
     QSharedPointer<QStringListModel> model;
 };
+
+typedef QSharedPointer<Logger> LoggerHolder;

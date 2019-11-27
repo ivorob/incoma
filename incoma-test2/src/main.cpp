@@ -9,12 +9,18 @@ main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    LogFileDumper logFileDumper("new.log");
-    LOGGER("new")->addView(&logFileDumper);
-    LOGGER("new")->log("test1");
-    LOGGER("new")->log("test2");
-
     MainWindow window;
+
+    LOGGER("server")->log("test1");
+    LOGGER("server")->log("test2");
+    LOGGER("server")->log("test3");
+
+    LOGGER("client1")->log("test1");
+
+    LOGGER("client2")->log("test3");
+    LOGGER("client2")->log("test2");
+    LOGGER("client2")->log("test1");
+
     window.show();
     return app.exec();
 }

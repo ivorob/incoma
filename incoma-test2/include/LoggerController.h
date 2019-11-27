@@ -6,13 +6,20 @@
 
 class LoggerController {
 public:
-    LoggerController(QString title, QString filename);
+    LoggerController(QWidget *parent);
 
-    Logger& getLogger();
+    void attach(QString name, LoggerHolder logger);
+
     QWidget *getWidget();
     QString getTitle() const;
 private:
+    LoggerWidget *lazyLoadWidget(const QString& name);
+    LogFileDumper *lazyLoadLogFileDumper(const QString& name);
+    QString makeLoggerWidgetTitle(const QString& name) const;
+    QString makeLogFileName(const QString& name) const;
+private:
+    QWidget *parent;
     LoggerWidget *loggerWidget;
-    LogFileDumper logFileDumper;
-    Logger logger;
+    QSharedPointer<LogFileDumper> logFileDumper;
+    QMutex mutex;
 };

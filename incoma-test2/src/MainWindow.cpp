@@ -7,26 +7,27 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    QSharedPointer<LoggerController> serverLogController(new LoggerController("Server log", "server.log"));
-    QSharedPointer<LoggerController> client1LogController(new LoggerController("Client1 log", "client1.log"));
-    QSharedPointer<LoggerController> client2LogController(new LoggerController("Client2 log", "client2.log"));
+    LoggerProvider& loggerProvider = LoggerProvider::instance();
+    QObject::connect(&loggerProvider, SIGNAL(newLogger(QString, LoggerHolder)),
+            this, SLOT(newLogger(QString, LoggerHolder)));
+}
 
-    loggerControllers.append(serverLogController);
-    loggerControllers.append(client1LogController);
-    loggerControllers.append(client2LogController);
+MainWindow::~MainWindow()
+{
+    LoggerProvider& loggerProvider = LoggerProvider::instance();
+    QObject::disconnect(&loggerProvider, SIGNAL(newLogger(QString, LoggerHolder)),
+            this, SLOT(newLogger(QString, LoggerHolder)));
+}
 
-    for (auto loggerController : loggerControllers) {
+void
+MainWindow::newLogger(QString name, LoggerHolder holder)
+{
+    try {
+        QSharedPointer<LoggerController> loggerController(new LoggerController(this));
+        loggerController->attach(name, holder);
+        this->loggerControllers.append(loggerController);
+
         ui->tabWidget->addTab(loggerController->getWidget(), loggerController->getTitle());
+    } catch (const std::exception& e) {
     }
-
-    serverLogController->getLogger().log("Server test log 1");
-    serverLogController->getLogger().log("Server test log 2");
-    serverLogController->getLogger().log("Server test log 3");
-
-    client1LogController->getLogger().log("Client1 test log 1");
-
-    client2LogController->getLogger().log("Client2 test log 3");
-    client2LogController->getLogger().log("Client2 test log 2");
-    client2LogController->getLogger().log("Client2 test log 1");
-
 }

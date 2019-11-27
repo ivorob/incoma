@@ -12,7 +12,7 @@ LoggerProvider::get(const QString& name)
 {
     LoggerHolder result;
 
-    this->guard.lockForRead();
+    QReadLocker locker(&this->guard);
 
     auto it = this->loggers.find(name);
     if (it == this->loggers.end()) {
@@ -34,6 +34,8 @@ LoggerProvider::addLogger(const QString& name)
     if (it == this->loggers.end()) {
         LoggerHolder logger(new Logger);
         this->loggers.insert(name, logger);
+        this->guard.unlock();
+        emit newLogger(name, logger);
         return logger;
     }
 
