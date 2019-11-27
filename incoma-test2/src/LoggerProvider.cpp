@@ -16,8 +16,6 @@ LoggerProvider::get(const QString& name)
 
     auto it = this->loggers.find(name);
     if (it == this->loggers.end()) {
-        result.reset(new Logger);
-
         this->guard.unlock();
         result = addLogger(name);
     } else {
