@@ -20,6 +20,7 @@ SET (SOURCES
         ${SRC_DIR}/LoggerProvider.cpp
         ${SRC_DIR}/DataServer.cpp
         ${SRC_DIR}/DataClient.cpp
+        ${SRC_DIR}/SafeThreadContainer.cpp
     )
 
 SET (HEADERS
@@ -31,6 +32,7 @@ SET (HEADERS
         ${INCLUDE_DIR}/LoggerProvider.h
         ${INCLUDE_DIR}/DataServer.h
         ${INCLUDE_DIR}/DataClient.h
+        ${INCLUDE_DIR}/SafeThreadContainer.h
     )
 
 SET (UIS
