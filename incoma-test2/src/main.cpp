@@ -1,26 +1,32 @@
 #include <QApplication>
+#include <QThread>
 
 #include "MainWindow.h"
 #include "LoggerProvider.h"
-#include "LogFileDumper.h"
+#include "DataServer.h"
+#include "DataClient.h"
 
 int
 main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    MainWindow window;
+    MainWindow mainWindow;
+    mainWindow.show();
 
-    LOGGER("server")->log("test1");
-    LOGGER("server")->log("test2");
-    LOGGER("server")->log("test3");
+    try {
+        DataServer *server = new DataServer(9999, 4, &mainWindow);
 
-    LOGGER("client1")->log("test1");
+        for (int i = 0; i < 8; ++i) {
+            DataClient *client = new DataClient(server);
+            client->connect("localhost", 9999);
+            client->write(QString("Data from client%1").arg(i));
+        }
 
-    LOGGER("client2")->log("test3");
-    LOGGER("client2")->log("test2");
-    LOGGER("client2")->log("test1");
+        return app.exec();
+    } catch (const std::exception& e) {
+        LOGGER("error")->log(e.what());
+    }
 
-    window.show();
     return app.exec();
 }
