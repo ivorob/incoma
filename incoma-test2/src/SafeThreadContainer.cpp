@@ -8,7 +8,7 @@ SafeThreadContainer::writeData(const QString& name, const QString& value)
 }
 
 QString
-SafeThreadContainer::readData(const QString& name) const
+SafeThreadContainer::readData(const QString& name) const noexcept
 {
     QReadLocker locker(&this->guard);
     auto it = this->data.find(name);

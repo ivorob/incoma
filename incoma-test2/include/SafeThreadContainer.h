@@ -19,7 +19,7 @@ struct hash<QString> {
 class SafeThreadContainer {
 public:
     void writeData(const QString& name, const QString& value);
-    QString readData(const QString& name) const;
+    QString readData(const QString& name) const noexcept;
 private:
     mutable QReadWriteLock guard;
     std::unordered_map<QString, QString> data;
